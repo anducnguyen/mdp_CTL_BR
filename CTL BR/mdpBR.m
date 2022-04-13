@@ -109,7 +109,7 @@ while(i<=Nmax && flag)
         flag=0;
     else
 %         Vert_BR{i+1}=Approx_CTL(MDP,Vert_BR{i},BR_Sample_num);
-          Vert_BR{i+1}=BRexist(MDP,Vert_BR{i},pi_ini,A,0.9,B,0,9,BR_Sample_num);
+          Vert_BR{i+1}=BRforall(MDP,Vert_BR{i},pi_ini,A,0.9,B,0,9,BR_Sample_num);
 
         i=i+1;
     end
