@@ -1,50 +1,20 @@
-%% BR for MDP
-clear
-close
-
-%% number of state
-n=4;
-
-%% number of action
-m=3;
-
-%% transition matrix
-%%T(i,j,k)   transition from state i to state j under action k
-% action a
-T(1,2,1)=1;
-T(3,3,1)=1;
-T(4,4,1)=1;
-
-% action b
-T(2,1,2)=0.7;
-T(2,2,2)=0.3;
-
-% action c
-T(2,3,3)=0.5;
-T(2,4,3)=0.5;
-%Define Sat(A U B)
-A = [2 4];
-B = [1 2 3];
-
-
-%% MDP model
-% A 4 state MDP,
-% 3 actions.
-MDP.n=n;
-MDP.m=m;
-MDP.T=T;
-
-% E = EquiSet(MDP);
 %% Approximate solution
+function Vert_BRexist = BRexist(MDP,pi_init,A,alpha1,B,alpha2,Num_sample)
+% alpha 1: acceptance distribution sat(A)
+% alpha 2: acceptance distribution sat(B)
 
-BR_Sample_num=100;
-Nmax=3;
-pi_ini = [1;0;0;0];
+n = MDP.n;
+m = MDP.m;
+T = MDP.T;
+BR_Sample_num= Num_sample;
+Nmax=3; %max iteration
+pi_ini = pi_init;
 for i=1:BR_Sample_num-n
     Sample(:,i)=3*rand(n,1)-1.5;
     Sample(end,i)=1-sum(Sample(1:end-1,i));
 end
 Sample=[Sample eye(n)];
+
 
 yalmip('clear')
 z1=sdpvar(n,1);
@@ -55,8 +25,28 @@ cns=[];
 cns=[cns, ones(1,n)*Z1*ones(m,1)==1];
 cns=[cns, Z1>=zeros(n,m)];
 cns=[cns, Z1*ones(m,1)==z1];
-cns=[cns, sum(z2(2)+z2(4))>=0.9];
-cns=[cns, sum(z1(1)+z1(2)+z1(3))>=0.9];
+aa = [];
+bb = [];
+for i = 1:1:n
+    for j=1:1:length(A)
+        if i == A(j)
+        aa = [aa z(i)];
+        sumA = sum(aa);
+        cns=[cns, sumA>=alpha1];
+        end
+    end
+end
+
+for i = 1:1:n
+    for j=1:1:length(B)
+        if i == B(j)
+        bb = [bb z(i)];
+        sumB = sum(bb);
+        cns=[cns, sumB>=alpha2];
+        end
+    end
+end
+
 for i=1:n
     cns=[cns, ones(1,n)*(reshape(T(:,i,:),[n,m]).*Z1)*ones(m,1)==z2(i)];
 end
@@ -108,9 +98,7 @@ while(i<=Nmax && flag)
     if(abs(item-1)<=0.01)
         flag=0;
     else
-%         Vert_BR{i+1}=Approx_CTL(MDP,Vert_BR{i},BR_Sample_num);
-          Vert_BR{i+1}=BRexist(MDP,Vert_BR{i},pi_ini,A,0.9,B,0,9,BR_Sample_num);
-
+        Vert_BR{i+1}=Approx_CTL(MDP,Vert_BR{i},BR_Sample_num);
         i=i+1;
     end
     % RA_BRtotal=[RA_BRtotal; Vert_BR{i+1}];
@@ -121,16 +109,3 @@ end
 % nnn
 
 
-%% Plot
-sample_BR=Vert_BR{end};
-figure
-plot3(sample_BR(:,1),sample_BR(:,2),sample_BR(:,3),'k*')
-hold on
-%end
-
-[k1,av1] = convhull(sample_BR(:,1),sample_BR(:,2),sample_BR(:,3));
-trisurf(k1,sample_BR(:,1),sample_BR(:,2),sample_BR(:,3),'FaceColor','cyan')
-
-xlabel('$\pi(1)$','FontSize',12,'interpreter','latex')
-ylabel('$\pi(2)$','FontSize',12,'interpreter','latex')
-zlabel('$\pi(3)$','FontSize',12,'interpreter','latex')
