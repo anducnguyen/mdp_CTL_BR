@@ -1,5 +1,5 @@
 %% Approximate solution
-function Vert_BRforall = BRforall(MDP,pi_init,A,alpha1,B,alpha2,Num_sample)
+function Vert_BRexist = BRexist(MDP,pi_init,A,alpha1,B,alpha2,Num_sample)
 % alpha 1: acceptance distribution sat(A)
 % alpha 2: acceptance distribution sat(B)
 
@@ -50,11 +50,11 @@ for i = 1:1:n
         end
     end
 end
- cns=[cns, Z1*ones(m,1)==z1]; %occupation measure (Q*1) in Pi
-    for i=1:n
-        cns=[cns, Z1(i,:)>=zeros(1,m)]; %occupation >0
-        cns=[cns, ones(1,n)*(reshape(T(:,i,:),[n,m]).*Z1)*ones(m,1)==z2(i)]; %new state dist update
-    endobj=norm(Chosen_sample-z1); %norm(Sample(:,kkk)-z1,inf); % (Sample(:,kkk)-z1)'*(Sample(:,kkk)-z1); %
+
+for i=1:n
+    cns=[cns, ones(1,n)*(reshape(T(:,i,:),[n,m]).*Z1)*ones(m,1)==z2(i)];
+end
+obj=norm(Chosen_sample-z1); %norm(Sample(:,kkk)-z1,inf); % (Sample(:,kkk)-z1)'*(Sample(:,kkk)-z1); %
 ops = sdpsettings('solver','mosek','verbose',0);
 BRreachCTL_init = optimizer(cns,obj,ops,Chosen_sample,z1);
 
@@ -111,5 +111,4 @@ Vert_BR{1}=zz1;
 % % Comtime_SW(nnn)=toc;
 % % Vert_SW{nnn}=Vert_BR;
 % % nnn
-
 
