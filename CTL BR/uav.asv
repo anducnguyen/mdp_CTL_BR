@@ -251,10 +251,10 @@ U_admin{25}=[3 4 5];
 
 %Define Sat(A U B)
 %Define Sat(not_obsacle U goal points)
-A = [7 22];
+A = [7 19 22];
 states = [1:25];
 notA = setdiff(states,A);
-B = [1 9 13 16 23 25];
+B = [8 9 17 20 23 3 4];
 
 
 %% MDP model
@@ -268,7 +268,7 @@ MDP.T=T;
 
 
 %% Approximate solution for existential cae
-BR_Sample_num=500;
+BR_Sample_num=100;
 Nmax=25;
 pi_ini = [1;0;0;0];
 for i=1:BR_Sample_num-n
