@@ -14,16 +14,11 @@ m=Numu;
 
 T=transition_collision(Nums1,Numu);
 
-
-
-
 for iii=1:Numu
     for jjj1=1:Nums1
           sumT(jjj1,iii)=sum(T(jjj1,:,iii));
     end
 end
-
-
 
 %% construnct MDP
 MDP.n=n;
@@ -122,7 +117,7 @@ for i=1:BR_Sample_num
     yalmip('clear')
     z=sdpvar(MDP.n,1);  
     cns=[];
-     cns=[cns, z(:)>=0];
+    cns=[cns, z(:)>=0];
   cns=[cns, sum(z(:))==1];
     cns=[cns, sum(z(Target))>=epsilon];
      cns=[cns, z(Obs)==zeros(length(Obs),1)];
