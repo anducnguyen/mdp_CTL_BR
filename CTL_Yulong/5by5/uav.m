@@ -4,8 +4,8 @@ clc
 close all
 
 %% define grid world
-numx=20;
-numy=20;
+numx=5;
+numy=5;
 GW = createGridWorld(numy,numx);
 
 Statenum=[];
@@ -24,18 +24,16 @@ Statenum=[Statenum(:,2) abs(Statenum(:,1)-numy-1)];
 
 %% specify KTH
 
-Obs1=["[4,1]";"[4,2]";"[4,3]";"[4,4]";"[4,5]";"[5,3]";"[6,3]";"[7,3]";"[8,3]";"[9,3]";"[10,3]";...
-    "[11,3]";"[12,3]";"[13,3]";"[14,3]";"[15,3]";"[16,1]";"[16,2]";"[16,3]";"[16,4]";"[16,5]"];
-Obs2=["[4,9]";"[4,10]";"[4,11]";"[4,12]";"[4,13]";"[5,11]";"[6,11]";"[7,11]";"[8,11]";"[9,11]";"[10,11]";...
-    "[11,11]";"[12,11]";"[13,11]";"[14,11]";"[15,11]";"[16,9]";"[16,10]";"[16,11]";"[16,12]";"[16,13]"];
-Obs3=["[4,16]";"[4,17]";"[4,18]";"[4,19]";"[4,20]";"[5,18]";"[6,18]";"[7,18]";"[8,18]";"[9,18]";"[10,18]";...
-    "[11,18]";"[12,18]";"[13,18]";"[14,18]";"[15,18]";"[16,16]";"[16,17]";"[16,18]";"[16,19]";"[16,20]"];
+Obs=["[2,2]";"[2,3]";"[2,4]";"[3,3]";"[4,2]";"[4,3]";"[4,4]"];
 
 
-GW.ObstacleStates = [Obs1;Obs2;Obs3];
-GW.TerminalStates=["[1,19]";"[1,20]";"[2,19]";"[2,20]"];
+GW.ObstacleStates = [Obs];
+GW.TerminalStates=["[1,5]"];
 MDP.ObstacleStatesidx=state2idx(GW,GW.ObstacleStates);
 MDP.TerminalStatesidx=state2idx(GW,GW.TerminalStates);
+MDP.ini_state=["[5,1]"];
+MDP.ini_stateidx=state2idx(GW,MDP.ini_state);
+
 
 Obsnum=[];
 for k=1:length(GW.ObstacleStates)
@@ -47,9 +45,33 @@ for k=1:length(GW.ObstacleStates)
     item=str2double(item);
     Obsnum=[Obsnum;item'];
 end
-
 Obsnum=[Obsnum(:,2) abs(Obsnum(:,1)-numy-1)];
 
+
+
+Ternum=[];
+for k=1:length(GW.TerminalStates)
+    item=GW.TerminalStates(k);
+    item=erase(item,"[");
+    item=erase(item,"]");
+    item=replace(item,',',' ');
+    item=split(item);
+    item=str2double(item);
+    Ternum=[Ternum;item'];
+end
+Ternum=[Ternum(:,2) abs(Ternum(:,1)-numy-1)];
+
+Ininum=[];
+for k=1:length(MDP.ini_state)
+    item=MDP.ini_state(k);
+    item=erase(item,"[");
+    item=erase(item,"]");
+    item=replace(item,',',' ');
+    item=split(item);
+    item=str2double(item);
+    Ininum=[Ininum;item'];
+end
+Ininum=[Ininum(:,2) abs(Ininum(:,1)-numy-1)];
 
 
 
@@ -75,12 +97,30 @@ for k=1:length(GW.ObstacleStates)
     hold on
 end
 
+for k=1:length(MDP.ini_state)
+    x=Ininum(k,1)*2-1;
+    y=Ininum(k,2)*2-1;
+    XX=[x-1 x+1 x+1 x-1];
+    YY=[y-1 y-1 y+1 y+1];
+    fill(XX,YY,'b')
+    hold on
+end
+
+for k=1:length(GW.TerminalStates)
+    x=Ternum(k,1)*2-1;
+    y=Ternum(k,2)*2-1;
+    XX=[x-1 x+1 x+1 x-1];
+    YY=[y-1 y-1 y+1 y+1];
+    fill(XX,YY,'r')
+    hold on
+end
+
 axis([0 2*numx 0 2*numy])
 
 xticks([1:2:2*numx])
-xticklabels({'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'})
+xticklabels({'1','2','3','4','5'})
 yticks([1:2:2*numy])
-yticklabels({'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'})
+yticklabels({'1','2','3','4','5'})
 hold on
 
 
@@ -118,7 +158,7 @@ end
 MDP.Neigh=Neighstate;
 MDP.Neighstateidx=Neighstateidx;
 %% noisy the transition probability
-friction_pro=0.2;
+friction_pro=0;
 for i=1:MDP.n
     for k=1:MDP.m-1
         if sum(MDP.T(i,:,k))>0.05
@@ -138,27 +178,30 @@ for iii=1:MDP.m
     end
 end
 
+%% define obsset and target set
 A = MDP.ObstacleStatesidx;
 states = 1:MDP.n;
 notA = setdiff(states,A);
 B = MDP.TerminalStatesidx;
+alpha1=1;
+alpha2=0.9;
+
 
 
 
 n=MDP.n;
 m=MDP.m;
 T=MDP.T;
-%% Approximate solution for existential cae
-BR_Sample_num=1000;
-Nmax=5;
-%pi_ini = [1 zeros(1,15)]';
-for i=1:BR_Sample_num-n
-    Sample(:,i)=3*rand(n,1)-1.5;
-    Sample(end,i)=1-sum(Sample(1:end-1,i));
-end
 
-Sample=[Sample eye(n)];
+Iter_max=2;
+BR_Sample_num=100;
+Nmax=20;
 
+%% define initial distribution 
+pi_ini = zeros(1,n)';
+pi_ini(MDP.ini_stateidx)=1;
+
+%% initil optimization BR
 yalmip('clear')
 z1=sdpvar(n,1);
 z2=sdpvar(n,1);
@@ -177,38 +220,42 @@ obj=norm(Chosen_sample-z1); %norm(Sample(:,kkk)-z1,inf); % (Sample(:,kkk)-z1)'*(
 ops = sdpsettings('solver','mosek','verbose',0);
 BRexist_init = optimizer(cns,obj,ops,Chosen_sample,z1);
 
-tic
-% initialization
-for i=1:BR_Sample_num-n
-    Sample(:,i)=3*rand(n,1)-1.5;
-    Sample(end,i)=1-sum(Sample(1:end-1,i));
-end
-Sample=[Sample eye(n)];
 
-z11=zeros(n,BR_Sample_num);
-parfor k=1:BR_Sample_num
-    z11(:,k)=BRexist_init(Sample(:,k));
-end
-zz1=z11';
+for nnn=1:Iter_max
+    tic
+    %% Approximate solution for existential cae
+    % initialization
+    for i=1:BR_Sample_num-n
+        Sample(:,i)=3*rand(n,1)-1.5;
+        Sample(end,i)=1-sum(Sample(1:end-1,i));
+    end
+    Sample=[Sample eye(n)];
 
-zz1(find(zz1<= 1.0000e-8))=0;
-for kkk=1:size(zz1,1)
-    zz1(kkk,:)=zz1(kkk,:)/sum(zz1(kkk,:));
+    z11=zeros(n,BR_Sample_num);
+    parfor k=1:BR_Sample_num
+        z11(:,k)=BRexist_init(Sample(:,k));
+    end
+    zz1=z11';
+
+    zz1(find(zz1<= 1.0000e-8))=0;
+    for kkk=1:size(zz1,1)
+        zz1(kkk,:)=zz1(kkk,:)/sum(zz1(kkk,:));
+    end
+    Vert_BRexist{nnn}{1}=zz1;
+    %%
+    i=1;
+    flag=1;
+    while(i<=Nmax && flag)
+        item=find_convexhull(Vert_BRexist{nnn}{i},pi_ini);
+        if(abs(item-1)<=0.01)
+            flag=0;
+        else
+            Vert_BRexist{nnn}{i+1}=BRexist(MDP,Vert_BRexist{nnn}{i},notA,1,BR_Sample_num);
+            i=i+1;
+        end
+    end
+    Com_time(nnn)=toc;
 end
-Vert_BRexist{1}=zz1;
-%%
-i=1;
-flag=1;
-while(i<=Nmax && flag)
-   % item=find_convexhull(Vert_BRexist{i},pi_ini);
-   % if(abs(item-1)<=0.01)
-   %     flag=0;
-   % else
-        Vert_BRexist{i+1}=BRexist(MDP,Vert_BRexist{i},notA,1,BR_Sample_num);
-        i=i+1;
-   % end
-end
-toc
 
 
 
