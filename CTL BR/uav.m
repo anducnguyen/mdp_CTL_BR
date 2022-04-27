@@ -5,7 +5,7 @@ close all
 %% MDP model
 
 %A 5-by-5 grid world bounded by borders,
-% with 4 possible actions (North = 1, South = 2, East = 3, West = 4, stay = 5).
+% with 4 possible actions (North = 1, South = 2, East = 3, West = 4).
 numx=4;
 numy=4;
 
@@ -21,7 +21,7 @@ m=4;
 % action down :3
 % action left: 4
 % action right: 2
-T = transition_collision(n,m)
+T = transition_collision(n,m);
 
 % 0 1 0
 % 4 0 2
@@ -260,7 +260,7 @@ end
 A = [10 11];
 states = [1:16];
 notA = setdiff(states,A);
-B = [7 8];
+B = [7 8 16];
 
 
 %% MDP model
@@ -274,8 +274,8 @@ MDP.T=T;
 
 
 %% Approximate solution for existential cae
-BR_Sample_num=500;
-Nmax=25;
+BR_Sample_num=100;
+Nmax=16;
 pi_ini = [1 zeros(1,15)]';
 for i=1:BR_Sample_num-n
     Sample(:,i)=3*rand(n,1)-1.5;
@@ -293,7 +293,7 @@ cns=[];
 cns=[cns, ones(1,n)*Z1*ones(m,1)==1];
 cns=[cns, Z1>=zeros(n,m)];
 cns=[cns, Z1*ones(m,1)==z1];
-cns=[cns, sum(z1(notA))>=0.9];
+cns=[cns, sum(z1(notA))>=1];
 cns=[cns, sum(z2(B))>=0.9];
 for i=1:n
     cns=[cns, ones(1,n)*(reshape(T(:,i,:),[n,m]).*Z1)*ones(m,1)==z2(i)];
