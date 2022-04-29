@@ -1,4 +1,4 @@
-%% UAV
+%% PCTL UAV
 clear
 clc
 close all
@@ -22,7 +22,7 @@ end
 Statenum=[Statenum(:,2) abs(Statenum(:,1)-numy-1)];
 
 
-%% specify KTH
+%% specify obs
 
 Obs=["[2,2]";"[2,3]";"[2,4]";"[3,3]";"[4,2]";"[4,3]";"[4,4]"];
 
