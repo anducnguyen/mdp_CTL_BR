@@ -158,7 +158,7 @@ end
 MDP.Neigh=Neighstate;
 MDP.Neighstateidx=Neighstateidx;
 %% noisy the transition probability
-friction_pro=0;
+friction_pro=0.2;
 for i=1:MDP.n
     for k=1:MDP.m-1
         if sum(MDP.T(i,:,k))>0.05
@@ -193,8 +193,8 @@ n=MDP.n;
 m=MDP.m;
 T=MDP.T;
 
-Iter_max=2;
-BR_Sample_num=100;
+Iter_max=50;
+BR_Sample_num=500;
 Nmax=20;
 
 %% define initial distribution 
