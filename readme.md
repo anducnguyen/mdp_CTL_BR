@@ -35,4 +35,4 @@ The result is reported in the following [OneDrive](https://unioxfordnexus-my.sha
 
 
 ## License
-This allows the QEST 2022 Artifact Evaluation Committee to evaluate the artifact w.r.t. the required[criteria](https://www.qest.org/qest2022/artifacts.html#artifact-guidelines).
+This allows the QEST 2022 Artifact Evaluation Committee to evaluate the artifact w.r.t. the required [criteria](https://www.qest.org/qest2022/artifacts.html#artifact-guidelines).
