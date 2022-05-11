@@ -9,4 +9,8 @@ There are three folders:
 
 ## Installation
 
-Before running each '''matlab main.m'''
+Before running each 'main.m' in each folder, the follwing package is required:
+
+1. [yalmip](https://yalmip.github.io/tutorial/installation/)
+2. [mosek](https://www.mosek.com)
+3. [Matlab Reinforement Learning Toolbox](https://www.mathworks.com/products/reinforcement-learning.html)
