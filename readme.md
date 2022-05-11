@@ -9,7 +9,7 @@ There are three folders:
 
 ## Systems Information
 
-Macbook Pro Apple M1 chip,
+Macbook Pro 13" 2021 Apple M1 chip,
 8-core CPU with 4 performance cores and 4 efficiency cores,
 8-core GPU,
 16-core Neural Engine,
