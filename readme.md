@@ -27,9 +27,9 @@ Before running each 'main.m' in each folder, the follwing toolbox is required:
 2. [mosek](https://www.mosek.com)
 3. [Matlab Reinforement Learning Toolbox](https://www.mathworks.com/products/reinforcement-learning.html)
 
-Note that [yalmip] is contained in [toolbox/tbxmanager](https://github.com/anducnguyen/mdp_CTL_BR/tree/main/toolbox/tbxmanager/toolboxes) so you can just addpath in Matlab. 
+Note that *yalmip* is contained in [toolbox/tbxmanager](https://github.com/anducnguyen/mdp_CTL_BR/tree/main/toolbox/tbxmanager/toolboxes) so you can just addpath in Matlab. 
 
-For [mosek] you will need license file 'mosek.lic', a free version can be obtained with studentship.
+For *mosek* you will need license file 'mosek.lic', a free version can be obtained with studentship.
 
 ## Usage
 
