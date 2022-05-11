@@ -10,9 +10,13 @@ There are three folders:
 ## Systems Information
 
 Macbook Pro 13" 2021 Apple M1 chip,
+
 8-core CPU with 4 performance cores and 4 efficiency cores,
+
 8-core GPU,
+
 16-core Neural Engine,
+
 16 GB RAM
 
 ## Installation
@@ -23,7 +27,9 @@ Before running each 'main.m' in each folder, the follwing toolbox is required:
 2. [mosek](https://www.mosek.com)
 3. [Matlab Reinforement Learning Toolbox](https://www.mathworks.com/products/reinforcement-learning.html)
 
-Note that [yalmip] is contained in [toolbox/tbxmanager] so you can just addpath in Matlab. For [mosek] you will need license file 'mosek.lic', a free version can be obtained with studentship.
+Note that [yalmip] is contained in [toolbox/tbxmanager] so you can just addpath in Matlab. 
+
+For [mosek] you will need license file 'mosek.lic', a free version can be obtained with studentship.
 
 ## Usage
 
