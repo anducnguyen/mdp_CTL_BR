@@ -34,7 +34,7 @@ for j=1:MDP.T_determin_num
     cns=[cns, T_determin{j}'*z1==ZZ2'*alpha{j}];
 end
 obj=norm(Chosen_sample-z1); %norm(Sample(:,kkk)-z1,inf); % (Sample(:,kkk)-z1)'*(Sample(:,kkk)-z1); %
-ops = sdpsettings('solver','mosek','verbose',0);
+ops = sdpsettings('solver','sedumi','verbose',0);
 BRreachforall = optimizer(cns,obj,ops,Chosen_sample,z1);
 
 

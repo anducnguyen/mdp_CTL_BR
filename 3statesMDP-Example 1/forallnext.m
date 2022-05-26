@@ -18,7 +18,7 @@ for j=1:MDP.T_determin_num
     cns=[cns, Bset.A*T_determin{j}'*z1<=Bset.b];
 end
 obj=norm(Chosen_sample-z1); %norm(Sample(:,kkk)-z1,inf); % (Sample(:,kkk)-z1)'*(Sample(:,kkk)-z1); %
-ops = sdpsettings('solver','mosek','verbose',0);
+ops = sdpsettings('solver','sedumi','verbose',0);
 BRforall_init = optimizer(cns,obj,ops,Chosen_sample,z1);
 
 

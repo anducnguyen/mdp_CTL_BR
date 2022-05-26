@@ -1,7 +1,7 @@
 %% BR for MDP
 clear all
 close all
-
+tbxmanager restorepath
 %% number of state
 n=3;
 
@@ -83,7 +83,7 @@ cns=[cns, ones(1,n)*z==1];
 cns=[cns, z>=0];
 cns=[cns, -0.05<=z(1)-0.1<=0.05];
 cns=[cns, -0.05<=z(2)-0.7<=0.05];
-ns=[cns, -0.05<=z(3)-0.2<=0.05];
+% cns=[cns, -0.05<=z(3)-0.2<=0.05];
 Obs=Polyhedron(cns);
 
 

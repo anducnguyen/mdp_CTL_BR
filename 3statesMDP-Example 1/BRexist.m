@@ -33,7 +33,7 @@ for i=1:n
     cns=[cns, ones(1,n)*(reshape(T(:,i,:),[n,m]).*Z1)*ones(m,1)==z2(i)]; %new state dist update
 end
 obj=norm(Chosen_sample-z1); %norm(Sample(:,kkk)-z1,inf); % (Sample(:,kkk)-z1)'*(Sample(:,kkk)-z1); %
-ops = sdpsettings('solver','mosek','verbose',0);
+ops = sdpsettings('solver','sedumi','verbose',0);
 BRreachexist = optimizer(cns,obj,ops,Chosen_sample,z1);
 
 
