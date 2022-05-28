@@ -1,8 +1,9 @@
 # CTL Model Checking of Markov Decision Processes over the Distribution Space
 
 This repo also published at [github](https://github.com/anducnguyen/mdp_CTL_BR/tree/main) contains artifacts for the paper CTL Model Checking of Markov Decision Processes] over the Distribution Space
-There are two folders:
+There are three folders:
 
+1. Toolbox
 1. 3statesMDP-Example1
 2. UAV-Case Study
 
@@ -23,12 +24,12 @@ Macbook Pro 13" 2021 Apple M1 chip,
 Before running each 'main.m' in each folder, the follwing [toolbox](https://github.com/anducnguyen/mdp_CTL_BR/tree/main/toolbox) is required:
 
 1. [yalmip](https://yalmip.github.io/tutorial/installation/)
-2. [mosek](https://www.mosek.com)
+2. [sedumi](https://sedumi.ie.lehigh.edu/?page_id=58)
 3. [Matlab Reinforement Learning Toolbox](https://www.mathworks.com/products/reinforcement-learning.html)
 
-Note that *yalmip* is contained in [toolbox/tbxmanager](https://github.com/anducnguyen/mdp_CTL_BR/tree/main/toolbox/tbxmanager/toolboxes) so you can just dowload and addpath in Matlab. 
+Note that *yalmip* and *sedumi* is contained in [toolbox/tbxmanager](https://github.com/anducnguyen/mdp_CTL_BR/tree/main/toolbox/tbxmanager/toolboxes) so you can just dowload and addpath in Matlab. 
 
-For *mosek* you will need license file 'mosek.lic', a free version can be obtained with studentship.
+<!-- For *mosek* you will need license file 'mosek.lic', a free version can be obtained with studentship. -->
 
 ## Usage
 
