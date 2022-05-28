@@ -36,6 +36,6 @@ Note that *yalmip* and *sedumi* is contained in [tbxmanager]so you can just addp
 After installing the toolboxes, you can directly run 
 1. run main.m in the 3statesMDP-Casestudy1 folder to reproduce the results of Example 2 in the paper, which are shown in Figs. 4–5;
 2. run uav determin synthesis plot.m in the UAV-Casestudy2 folder to re- produce Fig. 6; run uav noisy synthesis plot.m in the UAV-Casestudy2 folder to reproduce Fig. 7.
-The result is reported in the [Data_Casestudy2] File
+3. The results fore  UAV-Casestudy2is reported in the [Data_Casestudy2] files.
 ## License
 This allows the QEST 2022 Artifact Evaluation Committee to evaluate the artifact w.r.t. the required [criteria](https://www.qest.org/qest2022/artifacts.html#artifact-guidelines).
